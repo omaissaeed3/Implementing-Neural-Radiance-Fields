@@ -72,3 +72,24 @@ point_cloud.points = o3d.utility.Vector3dVector(test_points.numpy())
 
 # Visualize 3D point cloud
 o3d.visualization.draw_geometries([point_cloud])
+
+from skimage.metrics import peak_signal_noise_ratio as psnr
+from skimage.metrics import structural_similarity as ssim
+
+# Compute PSNR
+def compute_psnr(image1, image2):
+    return psnr(image1, image2, data_range=1.0)
+
+# Compute SSIM
+def compute_ssim(image1, image2):
+    return ssim(image1, image2, data_range=1.0, win_size=3,multichannel=True)
+
+# Example ground truth and predicted images (replace with actual images)
+ground_truth_image = processed_images[0]
+predicted_image = processed_images[1]  # Simulated new view
+
+psnr_value = compute_psnr(ground_truth_image, predicted_image)
+ssim_value = compute_ssim(ground_truth_image, predicted_image)
+
+print(f"PSNR: {psnr_value:.2f}")
+print(f"SSIM: {ssim_value:.4f}")
