@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import open3d as o3d
 
 # Define dataset path
 dataset_path = "./data/nerf_images"
@@ -60,3 +61,14 @@ for epoch in range(epochs):
     loss.backward()
     optimizer.step()
     print(f"Epoch {epoch+1}/{epochs} - Loss: {loss.item():.4f}")
+
+# Generate novel views
+test_points = torch.rand(1000, 3) * 2 - 1
+predicted_values = model(test_points).detach().numpy()
+
+# Extract point cloud
+point_cloud = o3d.geometry.PointCloud()
+point_cloud.points = o3d.utility.Vector3dVector(test_points.numpy())
+
+# Visualize 3D point cloud
+o3d.visualization.draw_geometries([point_cloud])
